@@ -21,14 +21,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 */
-Route::middleware('jwt.auth')->get('/user', function (Request $request) {
+
+/*
+Route::middleware('jwt.auth')->get('/usuarios', function (Request $request) {
     $adminHelper = new AdminHelper();
     $user = $adminHelper->GetAuthUser();
     return response()->json(['data' => $user], 200);
 });
+*/
 
 //Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
 
 //Route::get('/usuarios', 'App\Http\Controllers\UsuarioController@index');
 
 Route::get('/usuarios', [UsuarioController::class, 'index']);
+
+
+Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
+});
