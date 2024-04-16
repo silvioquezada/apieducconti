@@ -2,7 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Handlers\Admin\AuthHandler;
+use App\Models\Usuario;
+
+use Firebase\JWT\JWT;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\APIController;
+
+use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
 {
@@ -11,7 +21,19 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = Usuario::all();
+        $authHandler = new AuthHandler();
+        $apiController = new APIController();
+        //return $usuarios;
+        $user = 1;
+        $token = $authHandler->GenerateToken($user);
+
+            $success = [
+                'user' => $user,
+                'token' => $token,
+            ];
+    
+            return $apiController->sendResponse($success, 'user registered successfully', 201);
     }
 
     /**

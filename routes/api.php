@@ -1,7 +1,9 @@
 <?php
-
+use App\Helpers\AdminHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/
+Route::middleware('jwt.auth')->get('/user', function (Request $request) {
+    $adminHelper = new AdminHelper();
+    $user = $adminHelper->GetAuthUser();
+    return response()->json(['data' => $user], 200);
+});
 
+//Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
 
-Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
+//Route::get('/usuarios', 'App\Http\Controllers\UsuarioController@index');
+
+Route::get('/usuarios', [UsuarioController::class, 'index']);
