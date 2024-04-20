@@ -63,7 +63,23 @@ class UsuarioController extends Controller
         $usuario->usuario = $request->usuario;
         $usuario->password = $request->password;
         $usuario->estado = 1;
-        $usuario->save();
+        
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					"estado" => 1,
+					"descripcion" => "Registro almacenado correctamente"
+			);
+		}
+		else
+		{
+			$json = array(
+					"estado" => 0,
+					"descripcion" => "Registro no se pudo almacenar correctamente"
+			);
+		}
+		echo json_encode($json);
     }
 
     /**
