@@ -49,7 +49,21 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $usuario = new Usuario();
+        $usuario->cod_usuario = $request->cod_usuario;
+        $usuario->cedula = $request->cedula;
+        $usuario->apellido = $request->apellido;
+        $usuario->nombre = $request->nombre;
+        $usuario->genero = $request->genero;
+        $usuario->etnia = $request->etnia;
+        $usuario->direccion = $request->direccion;
+        $usuario->celular = $request->celular;
+        $usuario->correo = $request->correo;
+        $usuario->nivel_instruccion = $request->nivel_instruccion;
+        $usuario->usuario = $request->usuario;
+        $usuario->password = $request->password;
+        $usuario->estado = 1;
+        $usuario->save();
     }
 
     /**
