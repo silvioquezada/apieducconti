@@ -37,6 +37,8 @@ Route::middleware('jwt.auth')->get('/usuarios', function (Request $request) {
 Route::get('/usuarios', [UsuarioController::class, 'index']);
 
 
+Route::post('/usuarios/login', [UsuarioController::class, 'login']);
+
 Route::post('/usuarios', [UsuarioController::class, 'store']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {

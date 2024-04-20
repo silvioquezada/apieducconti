@@ -36,6 +36,42 @@ class UsuarioController extends Controller
             return $apiController->sendResponse($success, 'user registered successfully', 201);
     }
 
+    public function login(Request $request)
+    {
+        $usuario = new Usuario();
+        $usuario->usuario = $request->usuario;
+        $usuario->password = $request->password;
+        $authHandler = new AuthHandler();
+        $apiController = new APIController();
+
+        $user = 1;
+        $token = $authHandler->GenerateToken($user);
+
+        $success = [
+            'user' => $user,
+            'token' => $token,
+        ];
+    
+        return $apiController->sendResponse($success, 'user registered successfully', 201);
+        /*
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					"estado" => 1,
+					"descripcion" => "Registro almacenado correctamente"
+			);
+		}
+		else
+		{
+			$json = array(
+					"estado" => 0,
+					"descripcion" => "Registro no se pudo almacenar correctamente"
+			);
+		}
+		echo json_encode($json);
+        */
+    }
     /**
      * Show the form for creating a new resource.
      */
