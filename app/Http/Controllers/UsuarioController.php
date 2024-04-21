@@ -141,6 +141,7 @@ class UsuarioController extends Controller
         $usuario->nivel_instruccion = $request->nivel_instruccion;
         $usuario->usuario = $request->usuario;
         $usuario->password = $request->password;
+        $usuario->tipo_usuario = $request->tipo_usuario;
         $usuario->estado = 1;
         
         $row = $usuario->save();
