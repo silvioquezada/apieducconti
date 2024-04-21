@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('usuario', 50)->default('0');
             $table->string('password', 100)->default('0');
             $table->integer('estado')->default(1);
+            $table->string('tipo_usuario', 10)->default('');
             $table->primary('cod_usuario');
             $table->timestamps();
         });

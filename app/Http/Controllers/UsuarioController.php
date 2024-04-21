@@ -38,11 +38,52 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
+        //$products= Usuario::all();
+        //return $products;
+        $json = Usuario::where('usuario', $request->usuario)->where('password', $request->password)->get();
+        
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'cod_usuario' => false
+			);
+		}
+        else
+        {
+            /*
+            $jsonResult = array(
+				"cod_usuario" => $json[0]["cod_usuario"]
+			);
+            */
+
+            $authHandler = new AuthHandler();
+            $apiController = new APIController();
+            
+            $token = $authHandler->GenerateToken($json[0]['cod_usuario']);
+
+            $jsonResult = array(
+                'usuario' => $json[0]['nombre'],
+                'tipo_usuario' => $json[0]['tipo_usuario'],
+                'token' => $token,
+                'estado' => 1
+            );
+        
+            //$jsonResult = $apiController->sendResponse($data, 'user registered successfully', 201);
+            
+        }
+		
+        return $jsonResult;
+        /*
         $usuario = new Usuario();
         $usuario->usuario = $request->usuario;
         $usuario->password = $request->password;
         $authHandler = new AuthHandler();
         $apiController = new APIController();
+
+
+        DB::table('incident_days')->where('cat_employee_incident_type_id', $request->incident_id)
+        ->where('first_year_rank','<',$antiquity)
+        ->where('second_year_rank','>',$antiquity)->first();
 
         $user = 1;
         $token = $authHandler->GenerateToken($user);
@@ -53,6 +94,8 @@ class UsuarioController extends Controller
         ];
     
         return $apiController->sendResponse($success, 'user registered successfully', 201);
+
+        */
         /*
         $row = $usuario->save();
 		if($row==true)
