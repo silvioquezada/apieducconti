@@ -73,48 +73,50 @@ class UsuarioController extends Controller
         }
 		
         return $jsonResult;
-        /*
-        $usuario = new Usuario();
-        $usuario->usuario = $request->usuario;
-        $usuario->password = $request->password;
-        $authHandler = new AuthHandler();
-        $apiController = new APIController();
-
-
-        DB::table('incident_days')->where('cat_employee_incident_type_id', $request->incident_id)
-        ->where('first_year_rank','<',$antiquity)
-        ->where('second_year_rank','>',$antiquity)->first();
-
-        $user = 1;
-        $token = $authHandler->GenerateToken($user);
-
-        $success = [
-            'user' => $user,
-            'token' => $token,
-        ];
-    
-        return $apiController->sendResponse($success, 'user registered successfully', 201);
-
-        */
-        /*
-        $row = $usuario->save();
-		if($row==true)
-		{
-			$json = array(
-					"estado" => 1,
-					"descripcion" => "Registro almacenado correctamente"
-			);
-		}
-		else
-		{
-			$json = array(
-					"estado" => 0,
-					"descripcion" => "Registro no se pudo almacenar correctamente"
-			);
-		}
-		echo json_encode($json);
-        */
     }
+
+    public function searchEmail($email)
+    {
+        
+        $json = Usuario::where('correo', $email)->get();
+        
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'estado' => false
+			);
+		}
+        else
+        {
+            $jsonResult = array(
+				'estado' => true
+			);
+        }
+		
+        return $jsonResult;
+    }
+
+    public function searchUser($user)
+    {
+        
+        $json = Usuario::where('usuario', $user)->get();
+        
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'estado' => false
+			);
+		}
+        else
+        {
+            $jsonResult = array(
+				'estado' => true
+			);
+        }
+		
+        return $jsonResult;
+    }
+
     /**
      * Show the form for creating a new resource.
      */

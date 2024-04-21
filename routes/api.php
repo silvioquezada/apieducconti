@@ -34,12 +34,12 @@ Route::middleware('jwt.auth')->get('/usuarios', function (Request $request) {
 
 //Route::get('/usuarios', 'App\Http\Controllers\UsuarioController@index');
 
-Route::get('/usuarios', [UsuarioController::class, 'index']);
-
-
-Route::post('/usuarios/login', [UsuarioController::class, 'login']);
+//Route::get('/usuarios', [UsuarioController::class, 'index']);
 
 Route::post('/usuarios', [UsuarioController::class, 'store']);
+Route::post('/usuarios/login', [UsuarioController::class, 'login']);
+Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEmail']);
+Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
