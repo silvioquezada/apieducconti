@@ -127,7 +127,7 @@ class UsuarioController extends Controller
 		}
         else
         {
-            $jsonResult = $json;
+            $jsonResult = $json[0];
         }
 		
         return $jsonResult;
