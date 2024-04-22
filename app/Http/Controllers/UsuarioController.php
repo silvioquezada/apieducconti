@@ -71,7 +71,6 @@ class UsuarioController extends Controller
 
     public function searchEmail($email)
     {
-        
         $json = Usuario::where('correo', $email)->get();
         
         if($json->isEmpty())
@@ -90,9 +89,26 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
+    public function searchCedula($cedula)
+    {
+        $json = Usuario::where('cedula', $cedula)->get();
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'estado' => false
+			);
+		}
+        else
+        {
+            $jsonResult = array(
+				'estado' => true
+			);
+        }
+        return $jsonResult;
+    }
+
     public function searchUser($user)
     {
-        
         $json = Usuario::where('usuario', $user)->get();
         
         if($json->isEmpty())
@@ -175,7 +191,7 @@ class UsuarioController extends Controller
 		{
 			$json = array(
 					"estado" => 0,
-					"descripcion" => "Registro no se pudo almacenar correctamente"
+					"descripcion" => "Registro no se pudo almacenar"
 			);
 		}
 		echo json_encode($json);
@@ -200,9 +216,40 @@ class UsuarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $usuario  = Usuario::find($request->cod_usuario);
+        $usuario->cedula = $request->cedula;
+        $usuario->apellido = $request->apellido;
+        $usuario->nombre = $request->nombre;
+        $usuario->genero = $request->genero;
+        $usuario->etnia = $request->etnia;
+        $usuario->direccion = $request->direccion;
+        $usuario->celular = $request->celular;
+        $usuario->correo = $request->correo;
+        $usuario->nivel_instruccion = $request->nivel_instruccion;
+        $usuario->usuario = $request->usuario;
+        $hash = Usuario::hash($request->password);
+        $usuario->password = $hash;
+        $usuario->tipo_usuario = $request->tipo_usuario;
+        $usuario->estado = 1;
+        
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					"estado" => 1,
+					"descripcion" => "Registro actualizado correctamente"
+			);
+		}
+		else
+		{
+			$json = array(
+					"estado" => 0,
+					"descripcion" => "Registro no se pudo actualizar"
+			);
+		}
+		echo json_encode($json);
     }
 
     /**
