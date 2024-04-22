@@ -14,6 +14,8 @@ use App\Http\Controllers\APIController;
 
 use Illuminate\Support\Facades\Validator;
 
+use App\Helpers\PublicHelper;
+
 class UsuarioController extends Controller
 {
     /**
@@ -21,6 +23,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        /*
         $usuarios = Usuario::all();
         $authHandler = new AuthHandler();
         $apiController = new APIController();
@@ -34,13 +37,13 @@ class UsuarioController extends Controller
             ];
     
             return $apiController->sendResponse($success, 'user registered successfully', 201);
+        */
     }
 
     public function login(Request $request)
     {
-        //$products= Usuario::all();
-        //return $products;
-        $json = Usuario::where('usuario', $request->usuario)->where('password', $request->password)->get();
+        $hash = Usuario::hash($request->password);
+        $json = Usuario::where('usuario', $request->usuario)->where('password', $hash)->get();
         
         if($json->isEmpty())
 		{
@@ -50,12 +53,6 @@ class UsuarioController extends Controller
 		}
         else
         {
-            /*
-            $jsonResult = array(
-				"cod_usuario" => $json[0]["cod_usuario"]
-			);
-            */
-
             $authHandler = new AuthHandler();
             $apiController = new APIController();
             
@@ -66,10 +63,7 @@ class UsuarioController extends Controller
                 'tipo_usuario' => $json[0]['tipo_usuario'],
                 'token' => $token,
                 'estado' => 1
-            );
-        
-            //$jsonResult = $apiController->sendResponse($data, 'user registered successfully', 201);
-            
+            ); 
         }
 		
         return $jsonResult;
@@ -117,6 +111,28 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
+    public function searchRowUser(Request $request)
+    {
+        $publicHelper = new PublicHelper();
+        $token = $publicHelper->GetAndDecodeJWT();
+        $userID = $token->data->userID;
+
+        $json = Usuario::where('cod_usuario', $userID)->get();
+        
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'estado' => false
+			);
+		}
+        else
+        {
+            $jsonResult = $json;
+        }
+		
+        return $jsonResult;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -142,7 +158,8 @@ class UsuarioController extends Controller
         $usuario->correo = $request->correo;
         $usuario->nivel_instruccion = $request->nivel_instruccion;
         $usuario->usuario = $request->usuario;
-        $usuario->password = $request->password;
+        $hash = Usuario::hash($request->password);
+        $usuario->password = $hash;
         $usuario->tipo_usuario = $request->tipo_usuario;
         $usuario->estado = 1;
         

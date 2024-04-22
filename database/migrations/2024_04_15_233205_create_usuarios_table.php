@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('correo', 100)->default('0');
             $table->string('nivel_instruccion', 20)->default('0');
             $table->string('usuario', 50)->default('0');
-            $table->string('password', 100)->default('0');
+            $table->text('password')->default('0');
             $table->integer('estado')->default(1);
             $table->string('tipo_usuario', 10)->default('');
             $table->primary('cod_usuario');

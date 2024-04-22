@@ -42,5 +42,6 @@ Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEm
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('/usuarios/searchrowuser', 'App\Http\Controllers\UsuarioController@searchRowUser');
     Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
 });

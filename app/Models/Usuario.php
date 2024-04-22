@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
+    const SALT = 'ClaveSegura';
+
     use HasFactory;
+
+    public static function hash($password) {
+        return hash('sha512', self::SALT . $password);
+    }
+    public static function verify($password, $hash) {
+        return ($hash == self::hash($password));
+    }
 }
