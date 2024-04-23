@@ -18,26 +18,10 @@ use App\Helpers\PublicHelper;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        /*
-        $usuarios = Usuario::all();
-        $authHandler = new AuthHandler();
-        $apiController = new APIController();
-        //return $usuarios;
-        $user = 1;
-        $token = $authHandler->GenerateToken($user);
-
-            $success = [
-                'user' => $user,
-                'token' => $token,
-            ];
-    
-            return $apiController->sendResponse($success, 'user registered successfully', 201);
-        */
+        $usuarios = Usuario::where('tipo_usuario', 'GESTOR')->get();
+        return $usuarios;
     }
 
     public function login(Request $request)
@@ -149,18 +133,12 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(string $id)
     {
-        //
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function save(Request $request)
     {
         $usuario = new Usuario();
         $usuario->cod_usuario = $request->cod_usuario;
@@ -183,39 +161,20 @@ class UsuarioController extends Controller
 		if($row==true)
 		{
 			$json = array(
-					"estado" => 1,
-					"descripcion" => "Registro almacenado correctamente"
+					'estado' => 1,
+					'descripcion' => 'Registro almacenado correctamente'
 			);
 		}
 		else
 		{
 			$json = array(
-					"estado" => 0,
-					"descripcion" => "Registro no se pudo almacenar correctamente"
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo almacenar correctamente'
 			);
 		}
 		echo json_encode($json);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         $usuario  = Usuario::find($request->cod_usuario);
@@ -238,25 +197,22 @@ class UsuarioController extends Controller
 		if($row==true)
 		{
 			$json = array(
-					"estado" => 1,
-					"descripcion" => "Registro actualizado correctamente"
+					'estado' => 1,
+					'descripcion' => 'Registro actualizado correctamente'
 			);
 		}
 		else
 		{
 			$json = array(
-					"estado" => 0,
-					"descripcion" => "Registro no se pudo actualizar correctamente"
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo actualizar correctamente'
 			);
 		}
 		echo json_encode($json);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        
     }
 }
