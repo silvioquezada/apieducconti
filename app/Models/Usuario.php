@@ -11,9 +11,14 @@ class Usuario extends Model
 
     use HasFactory;
 
+    public function getKeyName(){
+        return "cod_usuario";
+    }
+
     public static function hash($password) {
         return hash('sha512', self::SALT . $password);
     }
+
     public static function verify($password, $hash) {
         return ($hash == self::hash($password));
     }

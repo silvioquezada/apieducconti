@@ -191,7 +191,7 @@ class UsuarioController extends Controller
 		{
 			$json = array(
 					"estado" => 0,
-					"descripcion" => "Registro no se pudo almacenar"
+					"descripcion" => "Registro no se pudo almacenar correctamente"
 			);
 		}
 		echo json_encode($json);
@@ -246,7 +246,7 @@ class UsuarioController extends Controller
 		{
 			$json = array(
 					"estado" => 0,
-					"descripcion" => "Registro no se pudo actualizar"
+					"descripcion" => "Registro no se pudo actualizar correctamente"
 			);
 		}
 		echo json_encode($json);
