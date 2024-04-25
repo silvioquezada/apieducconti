@@ -211,6 +211,38 @@ class UsuarioController extends Controller
 		echo json_encode($json);
     }
 
+    public function saveManager(Request $request)
+    {
+        $usuario = new Usuario();
+        $usuario->cod_usuario = $request->cod_usuario;
+        $usuario->apellido = $request->apellido;
+        $usuario->nombre = $request->nombre;
+        $usuario->celular = $request->celular;
+        $usuario->correo = $request->correo;
+        $usuario->usuario = $request->usuario;
+        $hash = Usuario::hash($request->password);
+        $usuario->password = $hash;
+        $usuario->tipo_usuario = $request->tipo_usuario;
+        $usuario->estado = 1;
+        
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					'estado' => 1,
+					'descripcion' => 'Registro almacenado correctamente'
+			);
+		}
+		else
+		{
+			$json = array(
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo almacenar correctamente'
+			);
+		}
+		echo json_encode($json);
+    }
+
     public function destroy(string $id)
     {
         
