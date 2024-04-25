@@ -20,7 +20,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $usuarios = Usuario::where('tipo_usuario', 'GESTOR')->get();
+        $usuarios = Usuario::where('tipo_usuario', 'GESTOR')->orderBy('cod_usuario','desc')->get()->makeHidden(['password']);
         return $usuarios;
     }
 
