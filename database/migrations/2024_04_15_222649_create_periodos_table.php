@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->unsignedBigInteger('cod_periodo');
+            $table->string('codigo_periodo', 20)->default('');
             $table->integer('anio')->default(0);
             $table->string('descripcion', 100)->default('');
             $table->integer('estado')->default(1);
