@@ -20,7 +20,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $usuarios = Usuario::where('tipo_usuario', 'GESTOR')->orderBy('cod_usuario','desc')->get()->makeHidden(['password']);
+        $usuarios = Usuario::where('tipo_usuario', 'GESTOR')->where('estado', 1)->orderBy('cod_usuario','desc')->get()->makeHidden(['password']);
         return $usuarios;
     }
 
@@ -55,7 +55,7 @@ class UsuarioController extends Controller
 
     public function searchEmail($email)
     {
-        $json = Usuario::where('correo', $email)->get();
+        $json = Usuario::where('correo', $email)->where('estado', 1)->get();
         
         if($json->isEmpty())
 		{
@@ -75,7 +75,7 @@ class UsuarioController extends Controller
 
     public function searchCedula($cedula)
     {
-        $json = Usuario::where('cedula', $cedula)->get();
+        $json = Usuario::where('cedula', $cedula)->where('estado', 1)->get();
         if($json->isEmpty())
 		{
 			$jsonResult = array(
@@ -93,7 +93,7 @@ class UsuarioController extends Controller
 
     public function searchUser($user)
     {
-        $json = Usuario::where('usuario', $user)->get();
+        $json = Usuario::where('usuario', $user)->where('estado', 1)->get();
         
         if($json->isEmpty())
 		{
@@ -243,8 +243,57 @@ class UsuarioController extends Controller
 		echo json_encode($json);
     }
 
-    public function destroy(string $id)
+    public function updateManager(Request $request)
     {
+        $usuario  = Usuario::find($request->cod_usuario);
+        $usuario->apellido = $request->apellido;
+        $usuario->nombre = $request->nombre;
+        $usuario->celular = $request->celular;
+        $usuario->correo = $request->correo;
+        $usuario->usuario = $request->usuario;
+        $hash = Usuario::hash($request->password);
+        $usuario->password = $hash;
+        $usuario->tipo_usuario = $request->tipo_usuario;
+        $usuario->estado = 1;
         
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					'estado' => 1,
+					'descripcion' => 'Registro actualizado correctamente'
+			);
+		}
+		else
+		{
+			$json = array(
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo actualizar correctamente'
+			);
+		}
+		echo json_encode($json);
+    }
+
+    public function destroyManager(Request $request)
+    {
+        $usuario  = Usuario::find($request->cod_usuario);
+        $usuario->estado = 0;
+        
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = array(
+					'estado' => 1,
+					'descripcion' => 'Registro eliminado satisfactoriamente'
+			);
+		}
+		else
+		{
+			$json = array(
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo eliminar'
+			);
+		}
+		echo json_encode($json);
     }
 }

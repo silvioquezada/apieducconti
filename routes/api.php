@@ -12,10 +12,12 @@ Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEm
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {
-    Route::post('/usuarios/searchrowuser', 'App\Http\Controllers\UsuarioController@searchRowUser');
-    Route::put('/usuarios', 'App\Http\Controllers\UsuarioController@update');
+    Route::post('/usuarios/searchrowuser', [UsuarioController::class, 'searchRowUser']);
+    Route::put('/usuarios', [UsuarioController::class, 'update']);
     Route::get('/usuariosmanager', [UsuarioController::class, 'index']);
-    Route::post('/usuariosmanager/', [UsuarioController::class, 'saveManager']);
+    Route::post('/usuariosmanager', [UsuarioController::class, 'saveManager']);
+    Route::put('/usuariosmanager', [UsuarioController::class, 'updateManager']);
+    Route::put('/usuariosmanager/delete', [UsuarioController::class, 'destroyManager']);
     
-    Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
+    //Route::get('/categorias', 'App\Http\Controllers\CategoriaController@index');
 });
