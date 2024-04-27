@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Periodo extends Model
 {
     use HasFactory;
+
+    public function getKeyName(){
+        return "cod_periodo";
+    }
 }
