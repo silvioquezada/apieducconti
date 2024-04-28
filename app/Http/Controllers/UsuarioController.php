@@ -50,9 +50,9 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
-    public function searchEmail($email)
+    public function searchEmail($correo)
     {
-        $json = Usuario::where('correo', $email)->where('estado', 1)->get();
+        $json = Usuario::where('correo', $correo)->where('estado', 1)->get();
         
         if($json->isEmpty())
 		{
@@ -88,9 +88,9 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
-    public function searchUser($user)
+    public function searchUser($usuario)
     {
-        $json = Usuario::where('usuario', $user)->where('estado', 1)->get();
+        $json = Usuario::where('usuario', $usuario)->where('estado', 1)->get();
         
         if($json->isEmpty())
 		{
@@ -112,9 +112,9 @@ class UsuarioController extends Controller
     {
         $publicHelper = new PublicHelper();
         $token = $publicHelper->GetAndDecodeJWT();
-        $userID = $token->data->userID;
+        $cod_usuario = $token->data->userID;
 
-        $json = Usuario::where('cod_usuario', $userID)->get();
+        $json = Usuario::where('cod_usuario', $cod_usuario)->get();
         
         if($json->isEmpty())
 		{

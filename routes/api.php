@@ -25,4 +25,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/periodo/searchcodeperiod/{codigo_periodo}', [PeriodoController::class, 'searchCodePeriod']);
     Route::put('/periodo', [PeriodoController::class, 'update']);
     Route::put('/periodo/delete', [PeriodoController::class, 'destroy']);
+
+    Route::get('/categoria', [CategoriaController::class, 'index']);
+    Route::post('/categoria', [CategoriaController::class, 'save']);
+    Route::get('/categoria/searchcategory/{categoria}', [CategoriaController::class, 'searchCategory']);
+    Route::put('/categoria', [CategoriaController::class, 'update']);
+    Route::put('/categoria/delete', [CategoriaController::class, 'destroy']);
 });
