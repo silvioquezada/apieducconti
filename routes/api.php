@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\CursoController;
 
 Route::post('/usuarios', [UsuarioController::class, 'save']);
 Route::post('/usuarios/login', [UsuarioController::class, 'login']);
@@ -31,4 +32,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/categoria/searchcategory/{categoria}', [CategoriaController::class, 'searchCategory']);
     Route::put('/categoria', [CategoriaController::class, 'update']);
     Route::put('/categoria/delete', [CategoriaController::class, 'destroy']);
+
+    Route::get('/curso', [CursoController::class, 'index']);
+    Route::post('/curso', [CursoController::class, 'save']);
+    Route::get('/curso/searchcodecourse/{codigo_curso}', [CursoController::class, 'searchCodeCourse']);
+    Route::put('/curso', [CursoController::class, 'update']);
+    Route::put('/curso/delete', [CursoController::class, 'destroy']);
 });

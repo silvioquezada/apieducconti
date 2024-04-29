@@ -100,20 +100,20 @@ class PeriodoController extends Controller
         $periodo->estado = 0;
         
         $row = $periodo->save();
-		if($row==true)
-		{
-			$json = array(
-					'estado' => 1,
-					'descripcion' => 'Registro eliminado satisfactoriamente'
-			);
-		}
-		else
-		{
-			$json = array(
-					'estado' => 0,
-					'descripcion' => 'Registro no se pudo eliminar'
-			);
-		}
-		echo json_encode($json);
+			if($row==true)
+			{
+				$json = array(
+						'estado' => 1,
+						'descripcion' => 'Registro eliminado satisfactoriamente'
+				);
+			}
+			else
+			{
+				$json = array(
+						'estado' => 0,
+						'descripcion' => 'Registro no se pudo eliminar'
+				);
+			}
+			echo json_encode($json);
     }
 }
