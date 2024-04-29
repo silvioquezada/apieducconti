@@ -12,7 +12,7 @@ class Usuario extends Model
     use HasFactory;
 
     public function getKeyName(){
-        return "cod_usuario";
+        return 'cod_usuario';
     }
 
     public static function hash($password) {

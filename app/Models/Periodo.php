@@ -10,6 +10,6 @@ class Periodo extends Model
     use HasFactory;
 
     public function getKeyName(){
-        return "cod_periodo";
+        return 'cod_periodo';
     }
 }

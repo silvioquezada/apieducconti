@@ -13,6 +13,8 @@ Route::get('/usuarios/searchcedula/{cedula}', [UsuarioController::class, 'search
 Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEmail']);
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 
+Route::post('/curso/image', [CursoController::class, 'saveImage']);
+
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('/usuarios/searchrowuser', [UsuarioController::class, 'searchRowUser']);
     Route::put('/usuarios', [UsuarioController::class, 'update']);
@@ -34,6 +36,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/categoria/delete', [CategoriaController::class, 'destroy']);
 
     Route::get('/curso', [CursoController::class, 'index']);
+    
     Route::post('/curso', [CursoController::class, 'save']);
     Route::get('/curso/searchcodecourse/{codigo_curso}', [CursoController::class, 'searchCodeCourse']);
     Route::put('/curso', [CursoController::class, 'update']);

@@ -10,6 +10,6 @@ class Categoria extends Model
     use HasFactory;
 
     public function getKeyName(){
-        return "cod_categoria";
+        return 'cod_categoria';
     }
 }
