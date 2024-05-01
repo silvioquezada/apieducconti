@@ -15,6 +15,9 @@ use App\Helpers\PublicHelper;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+
+
+use Image;
 /*
 use Illuminate\Support\Facades\DB;
 use Illuminate\Facades\Storage;
@@ -25,45 +28,74 @@ class CursoController extends Controller
 {
 	public function saveImage(Request $request)
     {
-			/*
-			header("Access-Control-Allow-Origin: *");
-			header("Access-Control-Allow-Headers: *");
-			header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-			header("Allow: GET, POST, OPTIONS, PUT, DELETE");
-			*/
-			//var_dump($request);
-			//$img = $request->image;
-			//$file = $request[0];
-
-			
-			
 			if($request->hasFile("image")) {
-				echo "SI";
-			} else {
-				echo "NO";
-			}
-			/*
-			var_dump($_POST);
-
-			if(isset($_FILES['image'])) {
-				//$tamanio = $_FILES['image']['size'];
-				echo "SI";
-			} else {
-				echo "NO";
-			}
-			*/
-
-			//$extension = $request->image;
-			return 1;
-			/*
-			if($request->hasFile("image")) {
-				$imagen = $request->file("image");                        
+				
+				
+				$imagen = $request->file("image");
+				$nombreimagen = $request->name_image;
 				//$nombreimagen = $imagen->getClientOriginalName();
-				return $imagen;
+				$ruta = public_path("img/");            
+				
+				
+
+				$validator = Validator::make($request->all(), [
+					'image' => 'dimensions:min_width=100,min_height=200|max:200',
+				]);
+
+				if($validator->passes()) {
+					copy($imagen->getRealPath(),$ruta.$nombreimagen. "." .$imagen->guessExtension());
+					$jsonResult = array(
+						'estado' => true,
+						'messague' => 'La imagen se subió con exito'
+					);
+				} else {
+					$jsonResult = array(
+						'estado' => false,
+						'messague' => 'La imagen debe ser mínimo 100 pixeles de alto y 200 pixeles de ancho, con un peso de 200 KB'
+					);
+				}
+
+				/*
+				$urlfoto    = $request->file('image');
+				$nombre     = 'nuevonombre'.$urlfoto->guessExtension();
+				$ruta=public_path('/img/'.$nombre);
+				Image::make($urlfoto->getRealPath())
+						->resize(600,400, function ($constraint){ 
+								$constraint->aspectRatio();
+						})
+						->save($ruta,72);
+						*/
+
 			} else {
-				return "NO";
+				$jsonResult = array(
+					'estado' => false,
+					'messague' => 'No se a podido subir la imagen al servidor'
+				);
 			}
-			*/
+
+			
+
+			
+			return $jsonResult;
+		}
+
+		public function saveDoc(Request $request)
+    {
+			if($request->hasFile("image")) {
+				
+				$imagen = $request->file("image");                        
+				$nombreimagen = $imagen->getClientOriginalName();
+				$ruta = public_path("img/");            
+				copy($imagen->getRealPath(),$ruta.$nombreimagen);
+				
+				//$request->file('archivo')->store('public');
+			} else {
+				echo "NO";
+			}
+
+
+			
+			return 1;
 		}
 
     public function index()
@@ -80,16 +112,16 @@ class CursoController extends Controller
         $json = Curso::where('codigo_curso', $codigo_curso)->where('estado', 1)->get();
         
         if($json->isEmpty())
-		{
-			$jsonResult = array(
-				'estado' => false
-			);
-		}
+				{
+					$jsonResult = array(
+						'estado' => false
+					);
+				}
         else
         {
             $jsonResult = array(
-				'estado' => true
-			);
+							'estado' => true
+						);
         }
 		
         return $jsonResult;
