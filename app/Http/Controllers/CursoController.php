@@ -15,9 +15,6 @@ use App\Helpers\PublicHelper;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-
-
-use Image;
 /*
 use Illuminate\Support\Facades\DB;
 use Illuminate\Facades\Storage;
@@ -42,12 +39,13 @@ class CursoController extends Controller
 					copy($imagen->getRealPath(),$ruta.$nombreimagen. "." .$imagen->guessExtension());
 					$jsonResult = array(
 						'estado' => true,
-						'messague' => 'La imagen se subió con exito'
+						'messague' => 'La imagen se subió con exito',
+						'file' => $nombreimagen. "." .$imagen->guessExtension()
 					);
 				} else {
 					$jsonResult = array(
 						'estado' => false,
-						'messague' => 'La imagen debe ser mínimo 100 pixeles de alto y 200 pixeles de ancho, con un peso de 200 KB'
+						'messague' => 'La imagen debe ser mínimo 100 pixeles de alto y 200 pixeles de ancho, con un peso máximo de 200 KB'
 					);
 				}
 			} else {
@@ -62,15 +60,16 @@ class CursoController extends Controller
 
 		public function savePdf(Request $request)
     {
+			//var_dump($request);
 			if($request->hasFile("pdf")) {
-				
 				$pdf = $request->file("pdf");
 				$nombrepdf = $request->name_pdf;
 				$ruta = public_path("pdf/");
 				copy($pdf->getRealPath(),$ruta.$nombrepdf. "." .$pdf->guessExtension());
 					$jsonResult = array(
 						'estado' => true,
-						'messague' => 'El pdf se subió con exito'
+						'messague' => 'El pdf se subió con exito',
+						'file' => $nombrepdf. "." .$pdf->guessExtension()
 					);
 			} else {
 					$jsonResult = array(
