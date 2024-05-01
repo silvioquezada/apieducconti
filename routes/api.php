@@ -35,6 +35,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('/curso', [CursoController::class, 'index']);
     Route::post('/curso/image', [CursoController::class, 'saveImage']);
+    Route::post('/curso/pdf', [CursoController::class, 'savePdf']);
     Route::post('/curso', [CursoController::class, 'save']);
     Route::get('/curso/searchcodecourse/{codigo_curso}', [CursoController::class, 'searchCodeCourse']);
     Route::put('/curso', [CursoController::class, 'update']);

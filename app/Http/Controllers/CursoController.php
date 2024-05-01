@@ -29,15 +29,11 @@ class CursoController extends Controller
 	public function saveImage(Request $request)
     {
 			if($request->hasFile("image")) {
-				
-				
 				$imagen = $request->file("image");
 				$nombreimagen = $request->name_image;
 				//$nombreimagen = $imagen->getClientOriginalName();
-				$ruta = public_path("img/");            
+				$ruta = public_path("img/");
 				
-				
-
 				$validator = Validator::make($request->all(), [
 					'image' => 'dimensions:min_width=100,min_height=200|max:200',
 				]);
@@ -54,48 +50,35 @@ class CursoController extends Controller
 						'messague' => 'La imagen debe ser mínimo 100 pixeles de alto y 200 pixeles de ancho, con un peso de 200 KB'
 					);
 				}
-
-				/*
-				$urlfoto    = $request->file('image');
-				$nombre     = 'nuevonombre'.$urlfoto->guessExtension();
-				$ruta=public_path('/img/'.$nombre);
-				Image::make($urlfoto->getRealPath())
-						->resize(600,400, function ($constraint){ 
-								$constraint->aspectRatio();
-						})
-						->save($ruta,72);
-						*/
-
 			} else {
 				$jsonResult = array(
 					'estado' => false,
 					'messague' => 'No se a podido subir la imagen al servidor'
 				);
 			}
-
-			
-
 			
 			return $jsonResult;
 		}
 
-		public function saveDoc(Request $request)
+		public function savePdf(Request $request)
     {
-			if($request->hasFile("image")) {
+			if($request->hasFile("pdf")) {
 				
-				$imagen = $request->file("image");                        
-				$nombreimagen = $imagen->getClientOriginalName();
-				$ruta = public_path("img/");            
-				copy($imagen->getRealPath(),$ruta.$nombreimagen);
-				
-				//$request->file('archivo')->store('public');
+				$pdf = $request->file("pdf");
+				$nombrepdf = $request->name_pdf;
+				$ruta = public_path("pdf/");
+				copy($pdf->getRealPath(),$ruta.$nombrepdf. "." .$pdf->guessExtension());
+					$jsonResult = array(
+						'estado' => true,
+						'messague' => 'El pdf se subió con exito'
+					);
 			} else {
-				echo "NO";
+					$jsonResult = array(
+						'estado' => false,
+						'messague' => 'No se a podido subir pdf al servidor'
+					);
 			}
-
-
-			
-			return 1;
+			return $jsonResult;
 		}
 
     public function index()
