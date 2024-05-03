@@ -13,6 +13,9 @@ Route::get('/usuarios/searchcedula/{cedula}', [UsuarioController::class, 'search
 Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEmail']);
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 
+Route::get('/curso/list', [CursoController::class, 'listCourse']);
+Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
+
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('/usuarios/searchrowuser', [UsuarioController::class, 'searchRowUser']);
     Route::put('/usuarios', [UsuarioController::class, 'update']);

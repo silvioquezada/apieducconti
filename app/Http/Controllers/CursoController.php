@@ -23,7 +23,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CursoController extends Controller
 {
-	public function saveImage(Request $request)
+	  public function listCourse()
+    {
+				$cursos = Curso::select('cursos.cod_curso', 'cursos.nombre_curso', 'cursos.imagen_curso', 'cursos.modalidad', 'cursos.fecha_inicio_inscripcion', 'cursos.fecha_fin_inscripcion', 'cursos.fecha_inicio', 'cursos.fecha_fin', 'periodos.anio', 'categorias.categoria')
+				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
+				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
+				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
+        return $cursos;
+    }
+
+		public function detailCourse($cod_curso)
+    {
+        $json = Curso::where('cod_curso', $cod_curso)->where('estado', 1)->get();
+        return $json[0];
+    }
+
+	  public function saveImage(Request $request)
     {
 			if($request->hasFile("image")) {
 				$imagen = $request->file("image");
@@ -85,7 +100,7 @@ class CursoController extends Controller
 				$cursos = Curso::select('cursos.*', 'periodos.anio', 'categorias.categoria')
 				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
 				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
-				->orderBy('cod_curso','desc')->get();
+				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
         return $cursos;
     }
 
