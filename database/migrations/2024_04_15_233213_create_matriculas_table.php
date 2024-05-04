@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('estado_aprobacion')->default(0);
             $table->string('archivo_certificado', 50)->default('');
             $table->text('observacion_revision')->default('');
+            $table->string('documento_descripcion', 50)->nullable();
             $table->integer('estado')->default(1);
             $table->primary('cod_matricula');
             $table->foreign('cod_curso')->references('cod_curso')->on('cursos')

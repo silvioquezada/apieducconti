@@ -15,11 +15,6 @@ use App\Helpers\PublicHelper;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-/*
-use Illuminate\Support\Facades\DB;
-use Illuminate\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response; 
-*/
 
 class CursoController extends Controller
 {
@@ -75,7 +70,6 @@ class CursoController extends Controller
 
 		public function savePdf(Request $request)
     {
-			//var_dump($request);
 			if($request->hasFile("pdf")) {
 				$pdf = $request->file("pdf");
 				$nombrepdf = $request->name_pdf;
@@ -126,39 +120,39 @@ class CursoController extends Controller
 
     public function save(Request $request)
     {
-        $curso = new Curso();
-        $curso->cod_curso = $request->cod_curso;
-        $curso->codigo_curso = $request->codigo_curso;
-        $curso->cod_periodo = $request->cod_periodo;
-        $curso->cod_categoria = $request->cod_categoria;
-				$curso->nombre_curso = $request->nombre_curso;
-				$curso->imagen_curso = $request->imagen_curso;
-				$curso->fecha_inicio_inscripcion = $request->fecha_inicio_inscripcion;
-				$curso->fecha_fin_inscripcion = $request->fecha_fin_inscripcion;
-				$curso->fecha_inicio = $request->fecha_inicio;
-				$curso->fecha_fin = $request->fecha_fin;
-				$curso->modalidad = $request->modalidad;
-				$curso->cupo = $request->cupo;
-				$curso->descripcion = $request->descripcion;
-				$curso->documento_descripcion = $request->documento_descripcion;
-        $curso->estado = 1;
-        
-        $row = $curso->save();
-		if($row==true)
-		{
-			$json = array(
-					'estado' => 1,
-					'descripcion' => 'Registro almacenado correctamente'
-			);
-		}
-		else
-		{
-			$json = array(
-					'estado' => 0,
-					'descripcion' => 'Registro no se pudo almacenar correctamente'
-			);
-		}
-		echo json_encode($json);
+			$curso = new Curso();
+			$curso->cod_curso = $request->cod_curso;
+			$curso->codigo_curso = $request->codigo_curso;
+			$curso->cod_periodo = $request->cod_periodo;
+			$curso->cod_categoria = $request->cod_categoria;
+			$curso->nombre_curso = $request->nombre_curso;
+			$curso->imagen_curso = $request->imagen_curso;
+			$curso->fecha_inicio_inscripcion = $request->fecha_inicio_inscripcion;
+			$curso->fecha_fin_inscripcion = $request->fecha_fin_inscripcion;
+			$curso->fecha_inicio = $request->fecha_inicio;
+			$curso->fecha_fin = $request->fecha_fin;
+			$curso->modalidad = $request->modalidad;
+			$curso->cupo = $request->cupo;
+			$curso->descripcion = $request->descripcion;
+			$curso->documento_descripcion = $request->documento_descripcion;
+			$curso->estado = 1;
+			
+			$row = $curso->save();
+			if($row==true)
+			{
+				$json = array(
+						'estado' => 1,
+						'descripcion' => 'Registro almacenado correctamente'
+				);
+			}
+			else
+			{
+				$json = array(
+						'estado' => 0,
+						'descripcion' => 'Registro no se pudo almacenar correctamente'
+				);
+			}
+			echo json_encode($json);
     }
 
     public function update(Request $request)

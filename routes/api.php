@@ -6,6 +6,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CursoController;
+use App\Http\Controllers\MatriculaController;
 
 Route::post('/usuarios', [UsuarioController::class, 'save']);
 Route::post('/usuarios/login', [UsuarioController::class, 'login']);
@@ -15,6 +16,9 @@ Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser
 
 Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
+
+Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::class, 'searchEnrolledCourse']);
+Route::post('/matricula', [MatriculaController::class, 'save']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('/usuarios/searchrowuser', [UsuarioController::class, 'searchRowUser']);
