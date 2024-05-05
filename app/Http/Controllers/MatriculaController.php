@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Handlers\Admin\AuthHandler;
 use App\Models\Matricula;
+use App\Models\Curso;
 use Firebase\JWT\JWT;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Auth;
@@ -99,6 +100,16 @@ class MatriculaController extends Controller
             );
         }
         echo json_encode($json);
+    }
+
+    public function myCourses()
+    {
+        $publicHelper = new PublicHelper();
+        $token = $publicHelper->GetAndDecodeJWT();
+        $userID = $token->data->userID;
+
+        $cursos = Matricula::with("Curso")->where('matriculas.cod_usuario', $userID)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
+        return $cursos;
     }
 
 }

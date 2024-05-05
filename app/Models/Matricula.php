@@ -13,4 +13,9 @@ class Matricula extends Model
     public function getKeyName(){
         return 'cod_matricula';
     }
+
+    public function Curso()
+    {
+        return $this->hasOne(Curso::class, "cod_curso", "cod_curso");
+    }
 }
