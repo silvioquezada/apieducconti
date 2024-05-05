@@ -19,9 +19,11 @@ use Illuminate\Support\Str;
 
 class MatriculaController extends Controller
 {
-    public function index()
+    public function index($cod_periodo, $estado_matricula)
     {
-        
+        //return $cod_periodo . ' - ' . $estado_matricula;
+        $matriculas = Matricula::with("Curso")->where('matriculas.cod_periodo', $cod_periodo)->where('matriculas.estado_matricula', $estado_matricula)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
+        return $matriculas;
     }
 
     public function searchEnrolledCourse($cod_curso)
@@ -102,14 +104,38 @@ class MatriculaController extends Controller
         echo json_encode($json);
     }
 
+    public function update(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->documento_descripcion = $request->documento_descripcion;
+        $matricula->estado = 1;
+        
+        $row = $matricula->save();
+        if($row==true)
+        {
+            $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Registro actualizado correctamente'
+            );
+        }
+        else
+        {
+            $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Registro no se pudo actualizar correctamente'
+            );
+        }
+        echo json_encode($json);
+    }
+
     public function myCourses()
     {
         $publicHelper = new PublicHelper();
         $token = $publicHelper->GetAndDecodeJWT();
         $userID = $token->data->userID;
 
-        $cursos = Matricula::with("Curso")->where('matriculas.cod_usuario', $userID)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
-        return $cursos;
+        $matriculas = Matricula::with("Curso")->where('matriculas.cod_usuario', $userID)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
+        return $matriculas;
     }
 
 }
