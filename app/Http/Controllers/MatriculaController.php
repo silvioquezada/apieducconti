@@ -22,7 +22,12 @@ class MatriculaController extends Controller
     public function index($cod_periodo, $estado_matricula)
     {
         //return $cod_periodo . ' - ' . $estado_matricula;
-        $matriculas = Matricula::with("Curso")->where('matriculas.cod_periodo', $cod_periodo)->where('matriculas.estado_matricula', $estado_matricula)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
+        /*$matriculas = Matricula::with("Curso")->where('matriculas.cod_periodo', $cod_periodo)->where('matriculas.estado_matricula', $estado_matricula)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
+        return $matriculas;*/
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
         return $matriculas;
     }
 
