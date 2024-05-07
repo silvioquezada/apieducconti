@@ -24,6 +24,8 @@ class MatriculaController extends Controller
         $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_matricula', $estado_matricula)
 				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
         return $matriculas;
     }
@@ -110,7 +112,7 @@ class MatriculaController extends Controller
     {
         $matricula  = Matricula::find($request->cod_matricula);
         $matricula->documento_descripcion = $request->documento_descripcion;
-        $matricula->estado_respuesta = 1;
+        $matricula->estado_matricula = 2;//Por respuesta
         $matricula->estado = 1;
         
         $row = $matricula->save();
@@ -135,8 +137,31 @@ class MatriculaController extends Controller
     {
         $matricula  = Matricula::find($request->cod_matricula);
         $matricula->observacion_revision = $request->observacion_revision;
-        $matricula->estado_respuesta = 0;
-        $matricula->estado_matricula = 1;
+        $matricula->estado_matricula = 1;//Por rectificar
+        $matricula->estado = 1;
+        
+        $row = $matricula->save();
+        if($row==true)
+        {
+            $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Registro actualizado correctamente'
+            );
+        }
+        else
+        {
+            $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Registro no se pudo actualizar correctamente'
+            );
+        }
+        echo json_encode($json);
+    }
+
+    public function approve(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->estado_matricula = 3;//Aprobado
         $matricula->estado = 1;
         
         $row = $matricula->save();
@@ -165,6 +190,28 @@ class MatriculaController extends Controller
 
         $matriculas = Matricula::with("Curso")->where('matriculas.cod_usuario', $userID)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
         return $matriculas;
+    }
+
+    public function destroy(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->estado = 0;
+        $row = $matricula->save();
+			if($row==true)
+			{
+				$json = array(
+						'estado' => 1,
+						'descripcion' => 'Registro eliminado satisfactoriamente'
+				);
+			}
+			else
+			{
+				$json = array(
+						'estado' => 0,
+						'descripcion' => 'Registro no se pudo eliminar'
+				);
+			}
+			echo json_encode($json);
     }
 
 }
