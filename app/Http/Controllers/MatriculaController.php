@@ -21,10 +21,7 @@ class MatriculaController extends Controller
 {
     public function index($cod_periodo, $estado_matricula)
     {
-        //return $cod_periodo . ' - ' . $estado_matricula;
-        /*$matriculas = Matricula::with("Curso")->where('matriculas.cod_periodo', $cod_periodo)->where('matriculas.estado_matricula', $estado_matricula)->where('matriculas.estado', 1)->orderBy('matriculas.cod_matricula','desc')->get();
-        return $matriculas;*/
-        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
 				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
@@ -113,6 +110,33 @@ class MatriculaController extends Controller
     {
         $matricula  = Matricula::find($request->cod_matricula);
         $matricula->documento_descripcion = $request->documento_descripcion;
+        $matricula->estado_respuesta = 1;
+        $matricula->estado = 1;
+        
+        $row = $matricula->save();
+        if($row==true)
+        {
+            $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Registro actualizado correctamente'
+            );
+        }
+        else
+        {
+            $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Registro no se pudo actualizar correctamente'
+            );
+        }
+        echo json_encode($json);
+    }
+
+    public function sendObservation(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->observacion_revision = $request->observacion_revision;
+        $matricula->estado_respuesta = 0;
+        $matricula->estado_matricula = 1;
         $matricula->estado = 1;
         
         $row = $matricula->save();

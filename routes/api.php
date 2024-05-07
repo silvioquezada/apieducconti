@@ -51,6 +51,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('/matricula/mycourses', [MatriculaController::class, 'myCourses']);
     Route::put('/matricula', [MatriculaController::class, 'update']);
-
     Route::get('/matricula/listinscriptions/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'index']);
+    Route::put('/matricula/sendobservation', [MatriculaController::class, 'sendObservation']);
 });
