@@ -53,6 +53,9 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/matricula', [MatriculaController::class, 'update']);
     Route::get('/matricula/listinscriptions/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'index']);
     Route::put('/matricula/sendobservation', [MatriculaController::class, 'sendObservation']);
-    Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
+    Route::put('/matricula/enroll', [MatriculaController::class, 'enroll']);
     Route::put('/matricula/delete', [MatriculaController::class, 'destroy']);
+    Route::get('/matricula/listallestudentscourse/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourse']);
+    Route::get('/matricula/listestudentscourse/{cod_periodo}/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
+    Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
 });

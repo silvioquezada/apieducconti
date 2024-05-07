@@ -158,7 +158,7 @@ class MatriculaController extends Controller
         echo json_encode($json);
     }
 
-    public function approve(Request $request)
+    public function enroll(Request $request)
     {
         $matricula  = Matricula::find($request->cod_matricula);
         $matricula->estado_matricula = 3;//Aprobado
@@ -212,6 +212,51 @@ class MatriculaController extends Controller
 				);
 			}
 			echo json_encode($json);
+    }
+
+    public function listAllEstudentsCourse($cod_periodo)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listEstudentsCourse($cod_periodo, $cod_curso)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.cod_curso', $cod_curso)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function approve(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->estado_aprobacion = $request->estado_aprobacion;
+        $matricula->estado = 1;
+        
+        $row = $matricula->save();
+        if($row==true)
+        {
+            $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Registro actualizado correctamente'
+            );
+        }
+        else
+        {
+            $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Registro no se pudo actualizar correctamente'
+            );
+        }
+        echo json_encode($json);
     }
 
 }
