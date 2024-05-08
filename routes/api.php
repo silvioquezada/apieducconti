@@ -48,6 +48,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/curso/searchcodecourse/{codigo_curso}', [CursoController::class, 'searchCodeCourse']);
     Route::put('/curso', [CursoController::class, 'update']);
     Route::put('/curso/delete', [CursoController::class, 'destroy']);
+    Route::get('/curso/listcourseperiod/{cod_periodo}', [CursoController::class, 'listCoursePeriod']);
 
     Route::get('/matricula/mycourses', [MatriculaController::class, 'myCourses']);
     Route::put('/matricula', [MatriculaController::class, 'update']);
@@ -56,7 +57,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/matricula/enroll', [MatriculaController::class, 'enroll']);
     Route::put('/matricula/delete', [MatriculaController::class, 'destroy']);
     Route::get('/matricula/listallestudentscourse/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourse']);
-    Route::get('/matricula/listestudentscourse/{cod_periodo}/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
+    Route::get('/matricula/listestudentscourse/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
     Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
     Route::post('/matricula/pdfcertificate', [MatriculaController::class, 'savePdfCertificate']);
     Route::put('/matricula/updatepdfcertificate', [MatriculaController::class, 'updatePdfCertificate']);

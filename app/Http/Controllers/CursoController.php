@@ -213,4 +213,14 @@ class CursoController extends Controller
 			}
 			echo json_encode($json);
     }
+
+		public function listCoursePeriod($cod_periodo)
+    {
+				$cursos = Curso::select('cursos.cod_curso', 'cursos.nombre_curso', 'cursos.imagen_curso', 'cursos.modalidad', 'cursos.fecha_inicio_inscripcion', 'cursos.fecha_fin_inscripcion', 'cursos.fecha_inicio', 'cursos.fecha_fin', 'periodos.anio', 'categorias.categoria')
+				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
+				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
+				->where('cursos.cod_periodo', $cod_periodo)
+				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
+        return $cursos;
+    }
 }

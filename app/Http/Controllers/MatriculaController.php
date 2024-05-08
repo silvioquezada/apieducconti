@@ -224,12 +224,11 @@ class MatriculaController extends Controller
         return $matriculas;
     }
 
-    public function listEstudentsCourse($cod_periodo, $cod_curso)
+    public function listEstudentsCourse($cod_curso)
     {
         $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
-                ->where('cursos.cod_periodo', $cod_periodo)
                 ->where('matriculas.cod_curso', $cod_curso)
 				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
         return $matriculas;
