@@ -58,4 +58,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/matricula/listallestudentscourse/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourse']);
     Route::get('/matricula/listestudentscourse/{cod_periodo}/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
     Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
+    Route::post('/matricula/pdfcertificate', [MatriculaController::class, 'savePdfCertificate']);
+    Route::put('/matricula/updatepdfcertificate', [MatriculaController::class, 'updatePdfCertificate']);
 });

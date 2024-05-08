@@ -216,7 +216,7 @@ class MatriculaController extends Controller
 
     public function listAllEstudentsCourse($cod_periodo)
     {
-        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('cursos.cod_periodo', $cod_periodo)
@@ -239,6 +239,51 @@ class MatriculaController extends Controller
     {
         $matricula  = Matricula::find($request->cod_matricula);
         $matricula->estado_aprobacion = $request->estado_aprobacion;
+        $matricula->estado = 1;
+        
+        $row = $matricula->save();
+        if($row==true)
+        {
+            $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Registro actualizado correctamente'
+            );
+        }
+        else
+        {
+            $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Registro no se pudo actualizar correctamente'
+            );
+        }
+        echo json_encode($json);
+    }
+
+    public function savePdfCertificate(Request $request)
+    {
+        if($request->hasFile("pdf")) {
+            $pdf = $request->file("pdf");
+            $nombrepdf = $request->name_pdf;
+            $ruta = public_path("certificatepdf/");
+            copy($pdf->getRealPath(),$ruta.$nombrepdf. "." .$pdf->guessExtension());
+                $jsonResult = array(
+                    'estado' => true,
+                    'messague' => 'El pdf se subió con exito',
+                    'file' => $nombrepdf. "." .$pdf->guessExtension()
+                );
+        } else {
+                $jsonResult = array(
+                    'estado' => false,
+                    'messague' => 'No se a podido subir pdf al servidor'
+                );
+        }
+        return $jsonResult;
+    }
+
+    public function updatePdfCertificate(Request $request)
+    {
+        $matricula  = Matricula::find($request->cod_matricula);
+        $matricula->archivo_certificado = $request->archivo_certificado;
         $matricula->estado = 1;
         
         $row = $matricula->save();
