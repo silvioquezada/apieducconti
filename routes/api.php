@@ -16,6 +16,7 @@ Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser
 
 Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
+Route::get('/curso/listcoursecategory/{cod_categoria}', [CursoController::class, 'listCourseCategory']);
 
 Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::class, 'searchEnrolledCourse']);
 Route::post('/matricula', [MatriculaController::class, 'save']);
@@ -61,4 +62,14 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
     Route::post('/matricula/pdfcertificate', [MatriculaController::class, 'savePdfCertificate']);
     Route::put('/matricula/updatepdfcertificate', [MatriculaController::class, 'updatePdfCertificate']);
+
+    Route::get('/matricula/listallestudentscourseapprove/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourseApprove']);
+    Route::get('/matricula/listallestudentscourseapprovestatus/{cod_periodo}/{estado_aprobacion}', [MatriculaController::class, 'listAllEstudentsCourseApproveStatus']);
+    Route::get('/matricula/listestudentscourseapprove/{cod_curso}/{estado_aprobacion}', [MatriculaController::class, 'listEstudentsCourseApprove']);
+    Route::get('/matricula/listallestudentscourseapproveallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseApproveAllStatus']);
+
+    Route::get('/matricula/listallestudentscourseinscribed/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourseInscribed']);
+    Route::get('/matricula/listallestudentscourseinscribedstatus/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'listAllEstudentsCourseInscribedStatus']);
+    Route::get('/matricula/listestudentscourseinscribed/{cod_curso}/{estado_matricula}', [MatriculaController::class, 'listEstudentsCourseInscribed']);
+    Route::get('/matricula/listallestudentscourseinscribedallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseInscribedAllStatus']);
 });

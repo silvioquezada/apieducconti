@@ -216,7 +216,7 @@ class MatriculaController extends Controller
 
     public function listAllEstudentsCourse($cod_periodo)
     {
-        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('cursos.cod_periodo', $cod_periodo)
@@ -226,7 +226,7 @@ class MatriculaController extends Controller
 
     public function listEstudentsCourse($cod_curso)
     {
-        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('matriculas.cod_curso', $cod_curso)
@@ -301,6 +301,100 @@ class MatriculaController extends Controller
             );
         }
         echo json_encode($json);
+    }
+
+
+    public function listAllEstudentsCourseApprove($cod_periodo)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_aprobacion', 0)
+                ->orWhere('matriculas.estado_aprobacion', 1)
+                ->orWhere('matriculas.estado_aprobacion', 2)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listAllEstudentsCourseApproveStatus($cod_periodo, $estado_aprobacion)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_aprobacion', $estado_aprobacion)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listEstudentsCourseApprove($cod_curso, $estado_aprobacion)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('matriculas.cod_curso', $cod_curso)
+                ->where('matriculas.estado_aprobacion', $estado_aprobacion)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listAllEstudentsCourseApproveAllStatus($cod_curso)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('matriculas.cod_curso', $cod_curso)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+
+
+    public function listAllEstudentsCourseInscribed($cod_periodo)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_matricula', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_matricula', 0)
+                ->orWhere('matriculas.estado_matricula', 1)
+                ->orWhere('matriculas.estado_matricula', 2)
+                ->orWhere('matriculas.estado_matricula', 3)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listAllEstudentsCourseInscribedStatus($cod_periodo, $estado_matricula)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_matricula', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_matricula', $estado_matricula)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listEstudentsCourseInscribed($cod_curso, $estado_matricula)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_matricula', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('matriculas.cod_curso', $cod_curso)
+                ->where('matriculas.estado_matricula', $estado_matricula)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
+    }
+
+    public function listAllEstudentsCourseInscribedAllStatus($cod_curso)
+    {
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_matricula', 'matriculas.estado_aprobacion', 'matriculas.archivo_certificado', 'usuarios.cedula', 'usuarios.apellido', 'usuarios.nombre')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
+				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
+                ->where('matriculas.cod_curso', $cod_curso)
+				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
+        return $matriculas;
     }
 
 }

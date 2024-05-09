@@ -223,4 +223,14 @@ class CursoController extends Controller
 				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
         return $cursos;
     }
+
+		public function listCourseCategory($cod_categoria)
+    {
+				$cursos = Curso::select('cursos.cod_curso', 'cursos.nombre_curso', 'cursos.imagen_curso', 'cursos.modalidad', 'cursos.fecha_inicio_inscripcion', 'cursos.fecha_fin_inscripcion', 'cursos.fecha_inicio', 'cursos.fecha_fin', 'periodos.anio', 'categorias.categoria')
+				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
+				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
+				->where('cursos.cod_categoria', $cod_categoria)
+				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
+        return $cursos;
+    }
 }
