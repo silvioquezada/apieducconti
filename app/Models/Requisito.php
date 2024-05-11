@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Requisito extends Model
 {
     use HasFactory;
+
+    public function getKeyName(){
+        return 'cod_requisitos';
+    }
 }

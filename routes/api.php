@@ -7,6 +7,7 @@ use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\MatriculaController;
+use App\Http\Controllers\RequisitoController;
 
 Route::post('/usuarios', [UsuarioController::class, 'save']);
 Route::post('/usuarios/login', [UsuarioController::class, 'login']);
@@ -72,4 +73,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/matricula/listallestudentscourseinscribedstatus/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'listAllEstudentsCourseInscribedStatus']);
     Route::get('/matricula/listestudentscourseinscribed/{cod_curso}/{estado_matricula}', [MatriculaController::class, 'listEstudentsCourseInscribed']);
     Route::get('/matricula/listallestudentscourseinscribedallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseInscribedAllStatus']);
+
+    Route::get('/requisitos', [RequisitoController::class, 'index']);
+    Route::put('/requisitos', [RequisitoController::class, 'update']);
 });

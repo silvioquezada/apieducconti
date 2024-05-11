@@ -4,61 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Handlers\Admin\AuthHandler;
+use App\Models\Requisito;
+use Firebase\JWT\JWT;
+use DateTimeImmutable;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\APIController;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\PublicHelper;
+
 class RequisitoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $requisito = Requisito::where('cod_requisitos', 1)->get();
+        return $requisito[0];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $requisito  = Requisito::find($request->cod_requisitos);
+        $requisito->requisitos = $request->requisitos;
+        
+        $row = $requisito->save();
+		if($row==true)
+		{
+			$json = array(
+					'estado' => 1,
+					'descripcion' => 'Registro actualizado correctamente'
+			);
+		}
+		else
+		{
+			$json = array(
+					'estado' => 0,
+					'descripcion' => 'Registro no se pudo actualizar correctamente'
+			);
+		}
+		echo json_encode($json);
     }
 }
