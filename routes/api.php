@@ -14,6 +14,7 @@ Route::post('/usuarios/login', [UsuarioController::class, 'login']);
 Route::get('/usuarios/searchcedula/{cedula}', [UsuarioController::class, 'searchCedula']);
 Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEmail']);
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
+Route::put('/usuarios/recoverpassword', [UsuarioController::class, 'recoverPassword']);
 
 Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);

@@ -82,9 +82,6 @@ class MatriculaController extends Controller
         
         $matricula = new Matricula();
         $matricula->cod_matricula = $request->cod_matricula;
-        date_default_timezone_set('America/Guayaquil');
-		$fecha_registro = date("Y-m-d H:i:s");
-        $matricula->fecha_registro = $fecha_registro;
         $matricula->cod_curso = $request->cod_curso;
         $matricula->cod_usuario = $userID;
         $matricula->documento_descripcion = $request->documento_descripcion;

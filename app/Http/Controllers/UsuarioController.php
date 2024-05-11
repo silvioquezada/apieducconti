@@ -13,6 +13,9 @@ use App\Http\Controllers\APIController;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\PublicHelper;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class UsuarioController extends Controller
 {
     public function index()
@@ -208,6 +211,73 @@ class UsuarioController extends Controller
 		echo json_encode($json);
     }
 
+    public function recoverPassword(Request $request)
+    {
+        $key = $this->generatePassword(10);
+        $hash = Usuario::hash($key);
+        $usuarios = Usuario::where('correo', $request->correo)->where('estado', 1)->get();
+        $usuario  = Usuario::find($usuarios[0]['cod_usuario']);
+        $usuario->password = $hash;
+        
+        $row = $usuario->save();
+		if($row==true)
+		{
+			$json = $this->sendEmail($key, $request->correo);
+		}
+		else
+		{
+			$json = array(
+					'estado' => 0,
+					'descripcion' => 'No se pudo actualizar contraseña correctamente'
+			);
+		}
+        
+		echo json_encode($json);
+    }
+
+    public function sendEmail($key, $correo) {
+        $mail = new PHPMailer(true);
+        try {
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = env('MAIL_HOST');
+            $mail->SMTPAuth = true;
+            $mail->Username = env('MAIL_USERNAME');
+            $mail->Password = env('MAIL_PASSWORD');
+            //$mail->SMTPSecure = env('MAIL_ENCRYPTION');
+            $mail->Port = env('MAIL_PORT');
+            $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            $mail->addAddress($correo);
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Recuperación de contraseña';
+            $mail->Body    = 'Estimado usuario su contraseña actual es: ' . $key;
+    
+            if( !$mail->send() ) {
+                $json = array(
+                    'estado' => 0,
+                    'descripcion' => 'Correo no enviado',
+                    'detalle' => $mail->ErrorInfo
+                );
+            }
+            else {
+                $json = array(
+                    'estado' => 1,
+                    'descripcion' => 'Correo enviado con éxto',
+                    'detalle' => ''
+                );
+            }
+        } catch (Exception $e) {
+            $json = array(
+                'estado' => 0,
+                'descripcion' => 'Correo no se pudo enviar',
+                'detalle' => ''
+            );
+        }
+
+        return $json;
+    }
+
     public function saveManager(Request $request)
     {
         $usuario = new Usuario();
@@ -292,5 +362,16 @@ class UsuarioController extends Controller
 			);
 		}
 		echo json_encode($json);
+    }
+
+    public function generatePassword($length)
+    {
+        $key = "";
+        $pattern = "1234567890abcdefghijklmnopqrstuvwxyz";
+        $max = strlen($pattern)-1;
+        for($i = 0; $i < $length; $i++){
+            $key .= substr($pattern, mt_rand(0,$max), 1);
+        }
+        return $key;
     }
 }
