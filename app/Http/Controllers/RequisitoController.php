@@ -21,6 +21,12 @@ class RequisitoController extends Controller
         return $requisito[0];
     }
 
+		public function search()
+    {
+        $requisito = Requisito::where('cod_requisitos', 1)->get();
+        return $requisito[0];
+    }
+
     public function update(Request $request)
     {
         $requisito  = Requisito::find($request->cod_requisitos);

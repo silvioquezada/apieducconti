@@ -24,6 +24,8 @@ Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::
 Route::post('/matricula', [MatriculaController::class, 'save']);
 Route::post('/matricula/pdf', [MatriculaController::class, 'savePdf']);
 
+Route::get('/requisitos', [RequisitoController::class, 'index']);
+
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('/usuarios/searchrowuser', [UsuarioController::class, 'searchRowUser']);
     Route::put('/usuarios', [UsuarioController::class, 'update']);
@@ -75,6 +77,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/matricula/listestudentscourseinscribed/{cod_curso}/{estado_matricula}', [MatriculaController::class, 'listEstudentsCourseInscribed']);
     Route::get('/matricula/listallestudentscourseinscribedallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseInscribedAllStatus']);
 
-    Route::get('/requisitos', [RequisitoController::class, 'index']);
+    Route::get('/requisitos/search', [RequisitoController::class, 'search']);
     Route::put('/requisitos', [RequisitoController::class, 'update']);
 });
