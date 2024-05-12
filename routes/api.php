@@ -20,10 +20,6 @@ Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
 Route::get('/curso/listcoursecategory/{cod_categoria}', [CursoController::class, 'listCourseCategory']);
 
-Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::class, 'searchEnrolledCourse']);
-Route::post('/matricula', [MatriculaController::class, 'save']);
-Route::post('/matricula/pdf', [MatriculaController::class, 'savePdf']);
-
 Route::get('/requisitos', [RequisitoController::class, 'index']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {
@@ -56,26 +52,31 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/curso/listcourseperiod/{cod_periodo}', [CursoController::class, 'listCoursePeriod']);
 
     Route::get('/matricula/mycourses', [MatriculaController::class, 'myCourses']);
+    Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::class, 'searchEnrolledCourse']);
+    Route::post('/matricula', [MatriculaController::class, 'save']);
+    Route::post('/matricula/pdf', [MatriculaController::class, 'savePdf']);
     Route::put('/matricula', [MatriculaController::class, 'update']);
+
     Route::get('/matricula/listinscriptions/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'index']);
+    Route::get('/matricula/listallestudentscourse/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourse']);
+    Route::get('/matricula/listestudentscourse/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
     Route::put('/matricula/sendobservation', [MatriculaController::class, 'sendObservation']);
     Route::put('/matricula/enroll', [MatriculaController::class, 'enroll']);
     Route::put('/matricula/delete', [MatriculaController::class, 'destroy']);
-    Route::get('/matricula/listallestudentscourse/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourse']);
-    Route::get('/matricula/listestudentscourse/{cod_curso}', [MatriculaController::class, 'listEstudentsCourse']);
+    
     Route::put('/matricula/approve', [MatriculaController::class, 'approve']);
     Route::post('/matricula/pdfcertificate', [MatriculaController::class, 'savePdfCertificate']);
     Route::put('/matricula/updatepdfcertificate', [MatriculaController::class, 'updatePdfCertificate']);
-
-    Route::get('/matricula/listallestudentscourseapprove/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourseApprove']);
-    Route::get('/matricula/listallestudentscourseapprovestatus/{cod_periodo}/{estado_aprobacion}', [MatriculaController::class, 'listAllEstudentsCourseApproveStatus']);
-    Route::get('/matricula/listestudentscourseapprove/{cod_curso}/{estado_aprobacion}', [MatriculaController::class, 'listEstudentsCourseApprove']);
-    Route::get('/matricula/listallestudentscourseapproveallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseApproveAllStatus']);
 
     Route::get('/matricula/listallestudentscourseinscribed/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourseInscribed']);
     Route::get('/matricula/listallestudentscourseinscribedstatus/{cod_periodo}/{estado_matricula}', [MatriculaController::class, 'listAllEstudentsCourseInscribedStatus']);
     Route::get('/matricula/listestudentscourseinscribed/{cod_curso}/{estado_matricula}', [MatriculaController::class, 'listEstudentsCourseInscribed']);
     Route::get('/matricula/listallestudentscourseinscribedallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseInscribedAllStatus']);
+
+    Route::get('/matricula/listallestudentscourseapprove/{cod_periodo}', [MatriculaController::class, 'listAllEstudentsCourseApprove']);
+    Route::get('/matricula/listallestudentscourseapprovestatus/{cod_periodo}/{estado_aprobacion}', [MatriculaController::class, 'listAllEstudentsCourseApproveStatus']);
+    Route::get('/matricula/listestudentscourseapprove/{cod_curso}/{estado_aprobacion}', [MatriculaController::class, 'listEstudentsCourseApprove']);
+    Route::get('/matricula/listallestudentscourseapproveallstatus/{cod_curso}', [MatriculaController::class, 'listAllEstudentsCourseApproveAllStatus']);
 
     Route::get('/requisitos/search', [RequisitoController::class, 'search']);
     Route::put('/requisitos', [RequisitoController::class, 'update']);
