@@ -12,12 +12,12 @@ class UsuarioSeeder extends Seeder
     {
         DB::table('usuarios')->insert([
             'cod_usuario' => 1,
-            'apellido' => 'Quezada Puchaicela',
-            'nombre' => 'Silvio Vinicio',
-            'celular' => '0939278001',
-            'correo' => 'sss.silq@gmail.com',
-            'usuario' => 'silvio',
-            'password' => 'f367d0b9c3400be6c0c9c8ca72c913bc7a7df7cacc250b091a289ec4861ef5cab1630893dc1ed2b624193dec64686d7856a97a0a6f25fd6078098aa89b68dc0c',//Silvio.1
+            'apellido' => 'Quezada Vasquez',
+            'nombre' => 'Silerio Florentino',
+            'celular' => '0999744113',
+            'correo' => 'sss_silq@hotmail.com',
+            'usuario' => 'silverio',
+            'password' => '8c1860e5865d5f330dfedc66e22cba3f8679eb11959844b61043f66d2539da95ccc486e9d737be20b2ad4c6f24ecf6666b3a49f2fac5272762ecf354e678d669',//Silverio.1
             'tipo_usuario' => 'GESTOR'
         ]);
     }

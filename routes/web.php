@@ -16,5 +16,3 @@ use App\Http\Controllers\CursoController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::post('/curso/image',[CursoController::class , 'saveImage' ] );
