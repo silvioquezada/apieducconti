@@ -32,7 +32,7 @@ class CursoController extends Controller
         $json = Curso::where('cod_curso', $cod_curso)->where('estado', 1)->get();
         return $json[0];
     }
-
+		
 	  public function saveImage(Request $request)
     {
 			if($request->hasFile("image")) {

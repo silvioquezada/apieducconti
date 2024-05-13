@@ -20,6 +20,8 @@ Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
 Route::get('/curso/listcoursecategory/{cod_categoria}', [CursoController::class, 'listCourseCategory']);
 
+Route::get('/matricula/verifyquotas/{cod_curso}', [MatriculaController::class, 'verifyQuotas']);
+
 Route::get('/requisitos', [RequisitoController::class, 'index']);
 
 Route::group(['middleware' => ['jwt.auth']], function () {

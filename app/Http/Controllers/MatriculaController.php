@@ -389,4 +389,10 @@ class MatriculaController extends Controller
         return $matriculas;
     }
 
+    public function verifyQuotas($cod_curso)
+    {
+        $json = Matricula::selectRaw('count(*) as total_quotas')->where('cod_curso', $cod_curso)->where('estado', 1)->get();
+        return $json[0];
+    }
+
 }
