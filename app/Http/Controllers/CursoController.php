@@ -91,7 +91,7 @@ class CursoController extends Controller
 
     public function index()
     {
-				$cursos = Curso::select('cursos.*', 'periodos.anio', 'categorias.categoria')
+				$cursos = Curso::select('cursos.*', 'periodos.anio', 'periodos.codigo_periodo', 'categorias.categoria')
 				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
 				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
 				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
