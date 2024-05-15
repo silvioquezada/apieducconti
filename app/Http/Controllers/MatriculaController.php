@@ -217,6 +217,7 @@ class MatriculaController extends Controller
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('cursos.cod_periodo', $cod_periodo)
+                ->where('matriculas.estado_matricula', 3)
 				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
         return $matriculas;
     }

@@ -16,6 +16,8 @@ Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEm
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
 Route::put('/usuarios/recoverpassword', [UsuarioController::class, 'recoverPassword']);
 
+Route::get('/categoria', [CategoriaController::class, 'index']);
+
 Route::get('/curso/list', [CursoController::class, 'listCourse']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
 Route::get('/curso/listcoursecategory/{cod_categoria}', [CursoController::class, 'listCourseCategory']);
@@ -38,7 +40,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/periodo', [PeriodoController::class, 'update']);
     Route::put('/periodo/delete', [PeriodoController::class, 'destroy']);
 
-    Route::get('/categoria', [CategoriaController::class, 'index']);
     Route::post('/categoria', [CategoriaController::class, 'save']);
     Route::get('/categoria/searchcategory/{categoria}', [CategoriaController::class, 'searchCategory']);
     Route::put('/categoria', [CategoriaController::class, 'update']);
