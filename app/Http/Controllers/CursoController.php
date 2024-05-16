@@ -27,6 +27,63 @@ class CursoController extends Controller
         return $cursos;
     }
 
+		public function listCourseOffer()
+    {
+				$cursos = Curso::select('cursos.cod_curso', 'cursos.nombre_curso', 'cursos.imagen_curso', 'cursos.modalidad', 'cursos.fecha_inicio_inscripcion', 'cursos.fecha_fin_inscripcion', 'cursos.fecha_inicio', 'cursos.fecha_fin', 'periodos.anio', 'categorias.categoria')
+				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
+				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
+				->where('cursos.estado', 1)
+				->where('cursos.visualizar', 1)
+				->orderBy('cod_curso','desc')->get();
+        return $cursos;
+    }
+
+		public function hideOffer(Request $request)
+    {
+			$curso  = Curso::find($request->cod_curso);
+			$curso->visualizar = 0;
+			
+			$row = $curso->save();
+			if($row==true)
+			{
+				$json = array(
+						'estado' => 1,
+						'descripcion' => 'Registro ocultado correctamente'
+				);
+			}
+			else
+			{
+				$json = array(
+						'estado' => 0,
+						'descripcion' => 'Registro no se pudo ocultar'
+				);
+			}
+			echo json_encode($json);
+    }
+
+		public function viewOffer(Request $request)
+    {
+			$curso  = Curso::find($request->cod_curso);
+			$curso->visualizar = 1;
+			
+			$row = $curso->save();
+			if($row==true)
+			{
+				$json = array(
+						'estado' => 1,
+						'descripcion' => 'Registro se visualizó correctamente'
+				);
+			}
+			else
+			{
+				$json = array(
+						'estado' => 0,
+						'descripcion' => 'Registro no se pudo visualizar'
+				);
+			}
+			echo json_encode($json);
+    }
+
 		public function detailCourse($cod_curso)
     {
         $json = Curso::where('cod_curso', $cod_curso)->where('estado', 1)->get();
@@ -230,6 +287,7 @@ class CursoController extends Controller
 				->join('periodos', 'periodos.cod_periodo', '=', 'cursos.cod_periodo')
 				->join('categorias', 'categorias.cod_categoria', '=', 'cursos.cod_categoria')
 				->where('cursos.cod_categoria', $cod_categoria)
+				->where('cursos.visualizar', 1)
 				->where('cursos.estado', 1)->orderBy('cod_curso','desc')->get();
         return $cursos;
     }

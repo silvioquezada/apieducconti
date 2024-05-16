@@ -19,6 +19,7 @@ Route::put('/usuarios/recoverpassword', [UsuarioController::class, 'recoverPassw
 Route::get('/categoria', [CategoriaController::class, 'index']);
 
 Route::get('/curso/list', [CursoController::class, 'listCourse']);
+Route::get('/curso/listcourseoffer', [CursoController::class, 'listCourseOffer']);
 Route::get('/curso/detail/{cod_curso}', [CursoController::class, 'detailCourse']);
 Route::get('/curso/listcoursecategory/{cod_categoria}', [CursoController::class, 'listCourseCategory']);
 
@@ -53,6 +54,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('/curso', [CursoController::class, 'update']);
     Route::put('/curso/delete', [CursoController::class, 'destroy']);
     Route::get('/curso/listcourseperiod/{cod_periodo}', [CursoController::class, 'listCoursePeriod']);
+    Route::put('/curso/hideoffer', [CursoController::class, 'hideOffer']);
+    Route::put('/curso/viewoffer', [CursoController::class, 'viewOffer']);
 
     Route::get('/matricula/mycourses', [MatriculaController::class, 'myCourses']);
     Route::get('/matricula/searchenrolledcourse/{cod_curso}', [MatriculaController::class, 'searchEnrolledCourse']);

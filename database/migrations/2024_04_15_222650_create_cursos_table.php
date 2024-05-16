@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('cupo')->default(1);
             $table->text('descripcion')->default('');
             $table->string('documento_descripcion', 50)->nullable();
+            $table->integer('visualizar')->default(1);
             $table->integer('estado')->default(1);
             $table->primary('cod_curso');
             $table->foreign('cod_periodo')->references('cod_periodo')->on('periodos')
