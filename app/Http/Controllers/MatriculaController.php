@@ -21,7 +21,7 @@ class MatriculaController extends Controller
 {
     public function index($cod_periodo, $estado_matricula)
     {
-        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
+        $matriculas = Matricula::select('matriculas.cod_matricula', 'cursos.nombre_curso', 'usuarios.correo', 'usuarios.celular', 'matriculas.observacion_revision', 'matriculas.documento_descripcion', 'matriculas.estado_matricula')->selectRaw("concat(usuarios.apellido, ' ', usuarios.nombre) as usuario")
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('cursos.cod_periodo', $cod_periodo)
