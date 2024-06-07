@@ -14,6 +14,7 @@ Route::post('/usuarios/login', [UsuarioController::class, 'login']);
 Route::get('/usuarios/searchcedula/{cedula}', [UsuarioController::class, 'searchCedula']);
 Route::get('/usuarios/searchemail/{email}', [UsuarioController::class, 'searchEmail']);
 Route::get('/usuarios/searchuser/{user}', [UsuarioController::class, 'searchUser']);
+Route::get('/usuarios/searchuseremail/{user}/{email}', [UsuarioController::class, 'searchUserEmail']);
 Route::put('/usuarios/recoverpassword', [UsuarioController::class, 'recoverPassword']);
 
 Route::get('/categorias', [CategoriaController::class, 'index']);

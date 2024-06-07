@@ -111,6 +111,26 @@ class UsuarioController extends Controller
         return $jsonResult;
     }
 
+    public function searchUserEmail($usuario, $correo)
+    {
+        $json = Usuario::where('usuario', $usuario)->where('correo', $correo)->where('estado', 1)->get();
+        
+        if($json->isEmpty())
+		{
+			$jsonResult = array(
+				'estado' => false
+			);
+		}
+        else
+        {
+            $jsonResult = array(
+				'estado' => true
+			);
+        }
+		
+        return $jsonResult;
+    }
+
     public function searchRowUser(Request $request)
     {
         $publicHelper = new PublicHelper();
