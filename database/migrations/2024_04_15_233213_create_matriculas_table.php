@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('cod_usuario');
             $table->integer('estado_matricula')->default(0);
             $table->integer('estado_aprobacion')->default(0);
-            $table->string('archivo_certificado', 50)->default('');
+            $table->string('archivo_certificado', 100)->default('');
             $table->text('observacion_revision')->default('');
-            $table->string('documento_descripcion', 50)->nullable();
+            $table->string('documento_descripcion', 100)->nullable();
             $table->integer('estado')->default(1);
             $table->timestamps();
             $table->primary('cod_matricula');

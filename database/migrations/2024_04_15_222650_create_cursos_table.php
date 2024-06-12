@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('modalidad', 15)->default('');
             $table->integer('cupo')->default(1);
             $table->text('descripcion')->default('');
-            $table->string('documento_descripcion', 50)->nullable();
+            $table->string('documento_descripcion', 100)->nullable();
             $table->integer('visualizar')->default(1);
             $table->integer('estado')->default(1);
             $table->primary('cod_curso');
