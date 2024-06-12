@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Matricula extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $casts = [ 'estado_matricula' => 'integer', 'estado_aprobacion' => 'integer' ];
 

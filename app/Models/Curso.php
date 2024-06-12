@@ -9,6 +9,8 @@ class Curso extends Model
 {
     use HasFactory;
 
+    protected $casts = [ 'cupo' => 'integer', 'visualizar' => 'integer' ];
+
     public function getKeyName(){
         return 'cod_curso';
     }
