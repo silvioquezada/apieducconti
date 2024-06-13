@@ -84,7 +84,10 @@ class MatriculaController extends Controller
         $matricula->cod_matricula = $request->cod_matricula;
         $matricula->cod_curso = $request->cod_curso;
         $matricula->cod_usuario = $userID;
-        $matricula->documento_descripcion = $request->documento_descripcion;
+        if(isset($request->documento_descripcion)) {
+            $matricula->documento_descripcion = $request->documento_descripcion;
+        }
+        
         $matricula->estado = 1;
         
         $row = $matricula->save();
@@ -342,6 +345,8 @@ class MatriculaController extends Controller
 				->join('usuarios', 'usuarios.cod_usuario', '=', 'matriculas.cod_usuario')
 				->join('cursos', 'cursos.cod_curso', '=', 'matriculas.cod_curso')
                 ->where('matriculas.cod_curso', $cod_curso)
+                ->where('matriculas.estado_matricula', 3)
+                ->whereNot('matriculas.estado_aprobacion', 0)
 				->where('matriculas.estado', 1)->orderBy('cod_matricula','desc')->get();
         return $matriculas;
     }
